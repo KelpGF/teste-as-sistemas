@@ -1,4 +1,4 @@
-# my-videos
+# LaraNotes
 ## Teste AS Sistemas - Laravel - LaraNotes
 
 Objetivo: desenvolver aplicação LaraNotes com primor.
@@ -20,3 +20,6 @@ Para esse teste foi utilizado o **Laravel(6+)**.
 - Pesquisar gastos por período ou/e categoria;
 - Apagar os gastos do usuário;
 - Apagar as categorias de gasto
+
+**Funcionalidades Diferenciais:**
+- Backend no formato de api (Rest)
