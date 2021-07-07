@@ -8,26 +8,16 @@ function getSpending(url, filter = false)
         $(".spending_card").show();
     }
 
-    $.get(url, function(retorno) {
+    $.get(url, function(spending) {
         $(`.spending_category`).html("");
         
-        retorno.map((spent) => {
+        spending.map((spent) => {
             $(`#spending_card_${spent.category_fk}`).show();
-
-            let closing_date = new Date(spent.closing_date);
-
-            date = (closing_date.getDate() < 10) ? '0'+closing_date.getDate() : closing_date.getDate();
-            date += '/'+((closing_date.getMonth() < 10) ? '0'+closing_date.getMonth() : closing_date.getMonth());
-            date += '/'+closing_date.getFullYear();
 
             $(`#spending_category_${spent.category_fk}`).append(`
                 <li class="list-group-item" id="spent_${spent.id}_li">
                     <div class="row">
                         <div class="col-8">
-                            <button class="btn btn-danger btn-sm" onClick="removeSpent(${spent.id})"
-                                title="Deletar Gasto">
-                                <i class="fas fa-times"></i>
-                            </button>
                             <strong>
                                 `
                                 +(Number(spent.total_spent)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })+
@@ -38,12 +28,21 @@ function getSpending(url, filter = false)
                             </span>
                         </div>
                         <div class="col-4 text-right">
-                            <i class="fas fa-calendar"></i> ${date}
+                            <i class="fas fa-calendar"></i> ${spent.closing_date}
+                            <button class="btn btn-danger btn-sm" onClick="removeSpent(${spent.id})"
+                                title="Deletar Gasto">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     </div>
                 </li>
             `);
         });
+
+        $("#div-preload").fadeOut("fast");
+    })
+    .fail(function() {
+        $("#div-preload").fadeOut("fast");
     });
 }
 
@@ -65,6 +64,7 @@ function spendingByFilters()
         filter = false;
     }
 
+    $("#div-preload").fadeIn("fast");
     getSpending(url, filter);
 };
 
@@ -94,6 +94,13 @@ $("#btn-spendingAdd").click(function() {
     .done(function() {
         $('#spentAdd').modal("hide");
         spendingByFilters();
+    })
+    .fail(function(response) {
+        const errors = response.responseJSON.errors;
+        
+        $.each(errors, function(idx, message) {
+            alert(message)
+        });
     });
 });
 

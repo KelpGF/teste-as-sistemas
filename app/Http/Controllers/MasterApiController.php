@@ -14,8 +14,12 @@ class MasterApiController extends BaseController
     public function index()
     {
         $data = $this->model->all();
-
-        return response()->json($data);
+        
+        if (!count($data)) {
+            return response()->json(['error' => 'Nenhum registro encontrado'], 404);
+        } else {
+            return response()->json($data);
+        }
     }
 
 
@@ -26,8 +30,21 @@ class MasterApiController extends BaseController
         $dataForm = $this->request->all();
 
         $data = $this->model->create($dataForm);
-
-        return response()->json($data, 201);
+        
+        if ($data) {
+            $response = [
+                "success" => "Um novo Registro foi adicionado !!",
+            ];
+            $status = 201;
+        } else {
+            $response = [
+                "errors" => ["message" => ["Erro ao criar novo Registro !!"]]
+            ];
+            
+            $status = 500;
+        }
+        
+        return response()->json($response, $status);
     }
 
 
@@ -35,10 +52,10 @@ class MasterApiController extends BaseController
     {
         if (!$data = $this->model->find($id)) {
             return response()->json([
-                'error'=>'Nenhuma informação encontrado'
+                'error'=>'Nenhuma informação encontradas'
             ], 404);
         } else {
-            return response()->json($data, 201);
+            return response()->json($data);
         }
     }
 
@@ -46,7 +63,7 @@ class MasterApiController extends BaseController
     public function update($id)
     {   
         if (!$data = $this->model->find($id))
-            return response()->json(['error'=>'Registro inválido'], 404);
+            return response()->json(['error' => 'Registro inválido'], 404);
 
         $this->validate($this->request, $this->model->rules());
 
@@ -54,7 +71,20 @@ class MasterApiController extends BaseController
 
         $data->update($dataForm);
 
-        return response()->json($data);
+        if ($data) {
+            $response = [
+                "success" => "Registro Atualizado !!",
+            ];
+            $status = 200;
+        } else {
+            $response = [
+                "errors" => ["message" => ["Erro ao atualizar Registro !!"]]
+            ];
+            
+            $status = 500;
+        }
+        
+        return response()->json($response, $status);
     }
 
 
@@ -65,7 +95,7 @@ class MasterApiController extends BaseController
             
             return response()->json(['success' => 'Deletado com sucesso']);
         } else {
-            return response()->json(['error'=>''], 404); 
+            return response()->json(['error' => 'Registro inválido'], 404); 
         }
     }
 }

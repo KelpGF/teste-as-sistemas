@@ -22,6 +22,17 @@
         </div>
     </nav>
     <section>
+        <div style="
+                position: absolute;
+                z-index: 9999;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                background-color: azure;"
+            id="div-preload"
+        >
+            <i class="fas fa-spinner fa-spin fa-5x fa-fw text-success" style="margin-top: 20%;"></i>;
+        </div>
         <div class="container my-4">
             <div class="row">
                 <div class="col-lg-4">
@@ -41,7 +52,7 @@
                     <div class="form-inline">
                         <h5 class="mb-0"> Período </h5> &nbsp;
                         <select name="" class="custom-select" id="period_select">
-                            <option value="">Todas</option>
+                            <option value="">Todos</option>
                             <option value="semanal">Semanal</option>
                             <option value="mensal">Mensal</option>
                             <option value="Anual">Anual</option>

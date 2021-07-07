@@ -2,7 +2,7 @@ const baseUrlCategories = 'api/categories';
 
 function getCategories()
 {
-    $.get(baseUrlCategories, function(retorno) {
+    $.get(baseUrlCategories, function(categories) {
         $("#spending_card").html(`
             <div class="col-lg-12 my-4">
                 <h3>Gastos Cadastrados</h3>
@@ -13,7 +13,7 @@ function getCategories()
             <option value="0">Tudo</option>
         `);
 
-        retorno.map((category) => {
+        categories.map((category) => {
             $("#category_select").append(`
                 <option value="${category.id}">
                     ${category.title}
@@ -49,7 +49,10 @@ function getCategories()
             `);
         });
     
-        getSpending("api/spending");
+        getSpending(baseUrlSpending);
+    })
+    .fail(function() {
+        $("#div-preload").fadeOut("fast");
     });    
 }
 
@@ -67,7 +70,15 @@ $("#btn-categoryAdd").click(function() {
     .done(function() { 
         $("#period_select").val("");
 
+        $("#div-preload").fadeIn("fast");
         getCategories();
+    })
+    .fail(function(response) {
+        const errors = response.responseJSON.errors;
+
+        $.each(errors, function(idx, message) {
+            alert(message)
+        });
     });
 });
 
