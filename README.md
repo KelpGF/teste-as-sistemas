@@ -3,7 +3,7 @@
 
 Objetivo: desenvolver aplicação LaraNotes com primor.
 
-Nesse exercício você foi construida uma aplicação em PHP, que permite ao usuário ter o controle de seus gastos 
+Nesse exercício foi construida uma aplicação em PHP, que permite ao usuário ter o controle de seus gastos 
 
 A entrega será efetuada até às **23:59 do dia combinado**.
 
